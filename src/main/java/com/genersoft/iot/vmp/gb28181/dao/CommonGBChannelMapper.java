@@ -307,6 +307,14 @@ public interface CommonGBChannelMapper {
             " </script>"})
     int removeCivilCodeByChannels(List<CommonGBChannel> channelList);
 
+    @Update(value = {" <script>" +
+            " UPDATE wvp_device_channel " +
+            " SET gb_civil_code = null, civil_code = null" +
+            " WHERE id in "+
+            " <foreach collection='channelIdList'  item='item'  open='(' separator=',' close=')' > #{item}</foreach>" +
+            " </script>"})
+    int removeCivilCodeByChannelIds(List<Integer> channelIdList);
+
     @SelectProvider(type = ChannelProvider.class, method = "queryByCivilCode")
     List<CommonGBChannel> queryByCivilCode(@Param("civilCode") String civilCode);
 
@@ -544,4 +552,24 @@ public interface CommonGBChannelMapper {
 
     @SelectProvider(type = ChannelProvider.class, method = "queryByDataId")
     CommonGBChannel queryByDataId(@Param("dataType") Integer dataType, @Param("dataDeviceId") Integer dataDeviceId);
+
+    @SelectProvider(type = ChannelProvider.class, method = "queryListByCivilCodeForUnusual")
+    List<CommonGBChannel> queryListByCivilCodeForUnusual(@Param("query") String query, @Param("online") Boolean online, @Param("dataType")Integer dataType);
+
+    @SelectProvider(type = ChannelProvider.class, method = "queryAllForUnusualCivilCode")
+    List<Integer> queryAllForUnusualCivilCode();
+
+    @SelectProvider(type = ChannelProvider.class, method = "queryListByParentForUnusual")
+    List<CommonGBChannel> queryListByParentForUnusual(@Param("query") String query, @Param("online") Boolean online, @Param("dataType")Integer dataType);
+
+    @SelectProvider(type = ChannelProvider.class, method = "queryAllForUnusualParent")
+    List<Integer> queryAllForUnusualParent();
+
+    @Update(value = {" <script>" +
+            " UPDATE wvp_device_channel " +
+            " SET gb_parent_id = null, gb_business_group_id = null, parent_id = null, business_group_id = null" +
+            " WHERE id in "+
+            " <foreach collection='channelIdsForClear'  item='item'  open='(' separator=',' close=')' > #{item}</foreach>" +
+            " </script>"})
+    void removeParentIdByChannelIds(List<Integer> channelIdsForClear);
 }
