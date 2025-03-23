@@ -4,8 +4,7 @@ ENV ZLM_GIT=https://github.com/kaysonsun/ZLMediaKit.git
 ENV ZLM_HOME=/ZLMediaKit
 
 RUN apt update \
-    && apt install -y git build-essential cmake libssl-dev libsdl-dev libavcodec-dev libavutil-dev ffmpeg \
-    && apt clean
+    && apt install -y git build-essential cmake libssl-dev libsdl-dev libavcodec-dev libavutil-dev ffmpeg
 
 RUN git clone --depth 1 $ZLM_GIT $ZLM_HOME
 
@@ -18,9 +17,10 @@ RUN git submodule update --init \
     && make -j4 \
     && rm -rf ../release/linux/Release/config.ini \
     && mkdir -p /opt/media \
-    && cp -r ../release/linux/Release/* /opt/media
+    && cp -r ../release/linux/Release/* /opt/media \
+    && apt clean
 
 COPY ./config/config.ini /opt/media/
 
-WORKDIR $ZLM_HOME/release/linux/Release
+WORKDIR /opt/media/
 
