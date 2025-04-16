@@ -1,4 +1,4 @@
-FROM registry.cn-shanghai.aliyuncs.com/k-lib/zlm:250323
+FROM registry.cn-shanghai.aliyuncs.com/k-lib/zlm:250415
 
 ENV REDIS_HOST 127.0.0.1
 ENV REDIS_PORT 6379
@@ -37,8 +37,13 @@ RUN export DEBIAN_FRONTEND=noninteractive &&\
 RUN mkdir /app
 WORKDIR /app
 
-ADD run.sh ./run.sh
 ADD ./wvp-pro-*.jar ./app.jar
 ADD ./application-prd.yml ./application.yml
+
+RUN echo '#!/bin/bash' > /app/run.sh && \
+            echo 'nohup /opt/media/MediaServer -d -m 3 &' >> /app/run.sh && \
+            echo 'sleep 10' >> /app/run.sh && \
+            echo 'java -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/app/ ${JAVA_OPTS} -Djava.security.egd=file:/dev/./urandom -jar /app/app.jar --spring.config.location=/app/application.yml' >> /app/run.sh && \
+            chmod +x /app/run.sh
 
 CMD ["sh", "run.sh"]
