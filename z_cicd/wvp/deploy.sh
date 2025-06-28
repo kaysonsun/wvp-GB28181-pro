@@ -22,4 +22,4 @@ docker run -d --name media-center --restart=always \
 -e MYSQL_USERNAME=root \
 -e MYSQL_PASSWORD=123456 \
 -e EXTERNAL_IP=192.168.88.172 \
-registry.cn-shanghai.aliyuncs.com/k-public/media-center:250323
+registry.cn-shanghai.aliyuncs.com/k-public/media-center:250416
