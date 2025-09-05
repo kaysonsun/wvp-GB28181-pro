@@ -67,7 +67,11 @@ media:
   id: emMXAtphqxW6RYsz
   # [必须修改] zlm服务器的内网IP
   ip: 127.0.0.1
+  # 摄像头访问的IP
   wan_ip: ${EXTERNAL_IP:10.168.1.88}
+  sdp-ip: ${media.wan_ip}
+  # 流媒体观看的IP
+  stream-ip: ${STREAM_IP:${media.wan_ip}}
   # [必须修改] zlm服务器的http.port
   http-port: 9092
   # [必选选] zlm服务器的hook.admin_params=secret

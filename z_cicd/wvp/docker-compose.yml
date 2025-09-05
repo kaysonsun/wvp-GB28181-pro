@@ -1,0 +1,55 @@
+services:
+  mysql:
+    image: registry.cn-shanghai.aliyuncs.com/k-public/mysql:8.0.40-debian
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_general_ci
+      - --lower_case_table_names=1
+    container_name: mysql
+    privileged: true
+    restart: always
+    ports:
+      - "8117:3306"
+    volumes:
+      - /data/mysql_data:/var/lib/mysql
+      - ./mysql-init:/docker-entrypoint-initdb.d/
+    environment:
+      TZ: Asia/Shanghai
+      MYSQL_ROOT_PASSWORD: Dwt#CUT@8F
+    networks:
+      - zn_network
+
+  media-center:
+    image: registry.cn-shanghai.aliyuncs.com/k-public/media-center:250905
+    container_name: media-center
+    privileged: true
+    restart: always
+    depends_on:
+      - mysql
+    environment:
+      TZ: Asia/Shanghai
+      REDIS_HOST: 172.17.0.1
+      REDIS_PORT: 6379
+      REDIS_DB: 5
+      REDIS_PASSWORD: iotopo_topstack
+      MYSQL_HOST: mysql
+      MYSQL_PORT: 3306
+      MYSQL_SCHEMA: media_center
+      MYSQL_USERNAME: root
+      MYSQL_PASSWORD: Dwt#CUT@8F
+      EXTERNAL_IP: 192.168.50.198
+      STREAM_IP: 60.165.216.223
+    ports:
+      - "18080:18080/tcp"
+      - "8116:8116/tcp"
+      - "8116:8116/udp"
+      - "9092:9092/tcp"
+      - "9092:9092/udp"
+      - "40000-40100:40000-40100/tcp"
+      - "40000-40100:40000-40100/udp"
+    networks:
+      - zn_network
+
+networks:
+  zn_network:
+    driver: bridge

@@ -1,5 +1,9 @@
 #!/bin/bash
 
+
+# build 在wvp文件夹运行
+docker build -t registry.cn-shanghai.aliyuncs.com/k-public/media-center:250905 -f ./Dockerfile ../../target/
+
 # 说明
 # redis 和 mysql 根据实际情况进行配置
 # EXTERNAL_IP为摄像头能访问的IP(公网IP)
@@ -22,4 +26,5 @@ docker run -d --name media-center --restart=always \
 -e MYSQL_USERNAME=root \
 -e MYSQL_PASSWORD=123456 \
 -e EXTERNAL_IP=192.168.88.172 \
+-e STREAM_IP=192.168.88.172 \
 registry.cn-shanghai.aliyuncs.com/k-public/media-center:250416

@@ -7,6 +7,5 @@ sleep 10
 
 # wvp
 java -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/app/ ${JAVA_OPTS} \
--Dmedia.stream-ip=120.71.41.110 \
 -Djava.security.egd=file:/dev/./urandom \
 -jar /app/app.jar --spring.config.location=/app/application.yml
